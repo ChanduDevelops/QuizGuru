@@ -47,8 +47,7 @@ const validateLogin = (userEmail, userPassword) => {
 
 router.route("/login")
   .get((req, res) => {
-    let loginPath = path.join(__dirname, "../", "public/login.html")
-    res.sendFile(loginPath)
+    res.redirect("login.html")
   })
   .post((req, res) => {
     const bodyData = req.body

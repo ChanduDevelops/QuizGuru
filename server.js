@@ -13,9 +13,8 @@ app.set("views", __dirname + "/views")
 
 app.use("/users", usersRouter)
 
-app.get("/users", (req, res) => {
-    let indexPath = path.join(__dirname, "public", "index.html")
-    res.sendFile(indexPath)
+app.get("/", (req, res) => {
+    res.redirect("/public/users/index.html")
 })
 
 app.use(express.static("public"))

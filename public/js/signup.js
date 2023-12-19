@@ -40,7 +40,7 @@ signupForm.addEventListener("submit", (e) => {
                     confirmButtonText: "Go to Login page"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "/login.html"
+                        window.location.href = "/users/login.html"
                     }
                 })
             }
@@ -58,7 +58,7 @@ signupForm.addEventListener("submit", (e) => {
                     confirmButtonText: "Go to Login page"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "/login.html"
+                        window.location.href = "/users/login.html"
                     }
                 })
             }

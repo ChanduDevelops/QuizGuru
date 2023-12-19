@@ -12,15 +12,17 @@ quizDataForm.addEventListener("submit", (e) => {
     let d = document.getElementById("d").value;
     let ans = document.getElementById("ans").value;
 
-    if (category !== "select" &&
-        level !== "select" &&
-        qsn !== "" &&
-        a !== "" &&
-        b !== "" &&
-        c !== "" &&
-        d !== "" &&
-        ans !== "select") {
-        let currentUrl = "http://localhost:2020/admin"
+    if (category === "select" ||
+        level === "select" ||
+        qsn === "" ||
+        a === "" ||
+        b === "" ||
+        c === "" ||
+        d === "" ||
+        ans === "select") {
+        notify("Must enter all fields", "orange")
+    } else {
+        let currentUrl = "http://localhost:2020/users/admin"
         fetch(currentUrl, {
             method: "POST",
             headers: {
@@ -44,14 +46,10 @@ quizDataForm.addEventListener("submit", (e) => {
                 notify("Data already exist in the server", "orange")
             }
             else {
-                notify('Error submitting form', "red")
+                throw new Error("Something went wrong")
             }
         }).catch((err) => {
-            notify("Error submitting form / network error", "red")
+            notify(err, "red")
         })
-
-    }
-    else {
-        notify("Must enter all fields", "orange")
     }
 })
