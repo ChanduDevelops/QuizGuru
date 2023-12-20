@@ -35,20 +35,20 @@ router.get("/", (re, res) => {
 // upload data
 router.post("/", (req, res) => {
     const bodyData = req.body
-    // console.log((bodyData));
+    // console.log((bodyData))
 
     bitsModel.create(bodyData)
         .then(() => {
-            console.log(`Data inserted`);
-            res.sendStatus(200);
+            console.log(`Data inserted`)
+            res.sendStatus(200)
         })
         .catch((err) => {
             if (err.code === 11000) {
-                console.error("Duplicate key error. Data not inserted.");
-                res.sendStatus(409);
+                console.error("Duplicate key error. Data not inserted.")
+                res.sendStatus(409)
             } else {
-                console.error("Error", err);
-                res.sendStatus(500);
+                console.error("Error", err)
+                res.sendStatus(500)
             }
         })
 

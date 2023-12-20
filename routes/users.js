@@ -73,6 +73,7 @@ router.route("/login")
             }
             else if (result) {
               res.status(200).json({ success: true, redirect: "/users/main.html" })
+              sessionStorage.setItem(userEmail, "in")
             }
             else {
               res.status(401).json({ success: false, msg: "wrong password", redirect: "/users/login.html" })
@@ -84,7 +85,6 @@ router.route("/login")
         res.status(500).send(err)
       })
   })
-// need to check hashed password from db email and password individually
 
 
 
