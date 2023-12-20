@@ -15,7 +15,11 @@ signupForm.addEventListener("submit", (e) => {
         notify("Must enter all fields", "orange")
     }
     else {
-        let currentUrl = "http://localhost:2020/users/signup"
+        // if (password.length < 8) {
+        //     notify("Password length must be more than 8 characters")
+        //     return
+        // }
+        let currentUrl = "http://127.0.0.1:2020/users/signup"
         fetch(currentUrl, {
             method: "POST",
             headers: {
@@ -58,7 +62,7 @@ signupForm.addEventListener("submit", (e) => {
                     confirmButtonText: "Go to Login page"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "/users/login.html"
+                        window.location.href = data.redirect
                     }
                 })
             }

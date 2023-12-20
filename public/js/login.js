@@ -11,7 +11,7 @@ loginForm.addEventListener("submit", (e) => {
         notify("Must enter all fields", "orange")
     }
     else {
-        let currentUrl = "http://localhost:2020/users/login"
+        let currentUrl = "http://127.0.0.1:2020/users/login"
         fetch(currentUrl, {
             method: "POST",
             headers: {
@@ -23,7 +23,7 @@ loginForm.addEventListener("submit", (e) => {
             })
         })
             .then((response) => {
-                if (response.ok) {
+                if (response.ok || response.status === 401) {
                     return response.json()
                 }
                 else {
@@ -31,12 +31,18 @@ loginForm.addEventListener("submit", (e) => {
                 }
             })
             .then((data) => {
-                if (data && data.redirect) {
+                if (data && data.redirect && !data.msg) {
                     notify("Login successfull!", "green")
                     setTimeout(() => {
                         window.location.href = data.redirect
                     }, 3000)
-                } else {
+                } else if (data.msg === "wrong password") {
+                    notify("Wrong password!", "red")
+                    setTimeout(() => {
+                        window.location.href = data.redirect
+                    }, 3000)
+                }
+                else {
                     notify("User not found", "orange")
                     setTimeout(() => {
                         window.location.href = data.redirect

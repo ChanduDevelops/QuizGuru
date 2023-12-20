@@ -18,8 +18,15 @@ db.on("error", err => console.error(err))
 db.once("open", () => console.log("Connected to mongoose!"))
 
 const usersSchema = new mongoose.Schema({
-  username: { type: String, unique: true },
-  email: { type: String, unique: true },
+  username: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true
+  },
   password: String,
 });
 
@@ -30,8 +37,9 @@ router.use("/admin", adminRouter)
 
 // login validation
 const validateLogin = (userEmail, userPassword) => {
+  console.log(userEmail, userPassword);
   return usersModel
-    .find({ email: userEmail, password: userPassword })
+    .find({ email: userEmail })
     .then((result) => {
       if (result && result.length > 0) {
         return result[0];
@@ -43,7 +51,7 @@ const validateLogin = (userEmail, userPassword) => {
       console.error(error);
       throw error;
     });
-};
+}
 
 router.route("/login")
   .get((req, res) => {
@@ -53,17 +61,27 @@ router.route("/login")
     const bodyData = req.body
     const userEmail = bodyData.email;
     const userPassword = bodyData.password;
-
     validateLogin(userEmail, userPassword)
       .then((userData) => {
-        if (userData !== null) {
-          res.status(200).json({ success: true, redirect: "/main.html" })
+        console.log(userData);
+        if (userData === null) {
+          res.status(404).json({ success: false, redirect: "/users/login.html" })
         } else {
-          res.status(404).json({ success: false, redirect: "/login.html" })
+          bcrypt.compare(userPassword, userData.password, (err, result) => {
+            if (err) {
+              res.status(500).json({ success: false, redirect: "/users/login.html" })
+            }
+            else if (result) {
+              res.status(200).json({ success: true, redirect: "/users/main.html" })
+            }
+            else {
+              res.status(401).json({ success: false, msg: "wrong password", redirect: "/users/login.html" })
+            }
+          })
         }
       })
-      .catch((error) => {
-        res.status(500).send("Internal Server Error")
+      .catch((err) => {
+        res.status(500).send(err)
       })
   })
 // need to check hashed password from db email and password individually
@@ -72,27 +90,26 @@ router.route("/login")
 
 router.route("/signup")
   .get((req, res) => {
-    // let signupPath = path.join(__dirname, "../", "public/signup.html")
-    // res.sendFile(signupPath)
     res.redirect("/signup.html")
   })
   .post((req, res) => {
     const bodyData = req.body
-    let email = bodyData.email
-    let password = bodyData.password
+    const username = bodyData.username
+    const email = bodyData.email
+    const password = bodyData.password
     bcrypt.hash(password, saltRounds, (err, hash) => {
       usersModel
-        .create({ email, hash })
+        .create({ username, email, password: hash })
         .then(() => {
-          res.status(200).json({ success: true, redirect: "/signup.html" })
+          res.status(200).json({ success: true, redirect: "/users/login.html" })
         })
         .catch((err) => {
           if (err.code === 11000) {
             console.error("Duplicate key error. Data not inserted.");
-            res.status(409).json({ success: false, redirect: "/signup.html" })
+            res.status(409).json({ success: false, redirect: "/users/signup.html" })
           } else {
             console.error("Error", err)
-            res.status(500).json({ success: false, redirect: "/signup.html" })
+            res.status(500).json({ success: false, redirect: "/users/signup.html" })
           }
         })
     })
@@ -101,4 +118,4 @@ router.route("/signup")
 
 router.use(express.static("public"));
 
-module.exports = router;
+module.exports = router

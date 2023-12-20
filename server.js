@@ -14,7 +14,7 @@ app.set("views", __dirname + "/views")
 app.use("/users", usersRouter)
 
 app.get("/", (req, res) => {
-    res.redirect("/public/users/index.html")
+    res.redirect("/index.html")
 })
 
 app.use(express.static("public"))
