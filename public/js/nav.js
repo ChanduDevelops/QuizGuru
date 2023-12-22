@@ -69,6 +69,7 @@ const signoutBtn = document.querySelector(".signout")
 signoutBtn.addEventListener("click", (e) => {
     e.preventDefault()
 
+    const currentUser = sessionStorage.getItem()
     const currentUrl = "http://127.0.0.1:2020/users/"
     fetch(currentUrl, {
         method: "GET",
@@ -76,7 +77,9 @@ signoutBtn.addEventListener("click", (e) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            currentUser: sessionStorage.get()
+            u
+            // get currentuser and remove from sessionstorage 
+            // currentUser: sessionStorage.get()
         })
     })
 })

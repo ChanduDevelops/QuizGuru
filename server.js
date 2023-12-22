@@ -4,7 +4,6 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express")
 const app = express()
-const path = require("path")
 const port = process.env.PORT ?? 6969
 
 const usersRouter = require("./routes/users")
