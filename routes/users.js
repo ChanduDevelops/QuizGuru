@@ -1,6 +1,6 @@
-const path = require("path")
 const express = require("express")
 const bodyParser = require('body-parser')
+const session = require("express-session")
 const router = express.Router()
 
 
@@ -9,6 +9,13 @@ const saltRounds = 10
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
+
+router.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }
+}))
 
 const mongoose = require("mongoose")
 mongoose.connect(process.env.DATABASE_URL)
@@ -35,9 +42,14 @@ const usersModel = mongoose.model("users", usersSchema);
 const adminRouter = require("./admin")
 router.use("/admin", adminRouter)
 
+const { router: mainRouter } = require("./main")
+router.use("/main", mainRouter)
+
+const qsnsRouter = require("./qsns")
+router.use("/qsns", qsnsRouter)
+
 // login validation
 const validateLogin = (userEmail, userPassword) => {
-  console.log(userEmail, userPassword);
   return usersModel
     .find({ email: userEmail })
     .then((result) => {
@@ -63,7 +75,6 @@ router.route("/login")
     const userPassword = bodyData.password;
     validateLogin(userEmail, userPassword)
       .then((userData) => {
-        console.log(userData);
         if (userData === null) {
           res.status(404).json({ success: false, redirect: "/users/login.html" })
         } else {
@@ -73,6 +84,7 @@ router.route("/login")
             }
             else if (result) {
               res.status(200).json({ success: true, redirect: "/users/main.html" })
+              req.session.user = userEmail
             }
             else {
               res.status(401).json({ success: false, msg: "wrong password", redirect: "/users/login.html" })
@@ -84,7 +96,6 @@ router.route("/login")
         res.status(500).send(err)
       })
   })
-
 
 
 router.route("/signup")
@@ -113,6 +124,45 @@ router.route("/signup")
         })
     })
   })
+
+router.route("/forgot_pswd")
+  .get((req, res) => {
+    res.redirect("/forgot_pswd.html")
+  })
+  .post((req, res) => {
+    const bodyData = req.body
+    const userEmail = bodyData.email
+    const userPassword = bodyData.password
+
+    validateLogin(userEmail, userPassword)
+      .then((userData) => {
+        if (userData === null) {
+          res.status(404).json({ success: false, msg: "not found", redirect: "/users/login.html" })
+        }
+        else {
+          bcrypt.hash(userPassword, saltRounds, (err, hash) => {
+            if (err) {
+              console.error("Error", err);
+              return res.status(500).json({ success: false, redirect: "/users/signup.html" })
+            }
+            usersModel.updateOne(
+              { email: userEmail },
+              {
+                $set: { password: hash }
+              }).then(() => {
+                res.status(200).json({ success: true, redirect: "/users/login.html" })
+              }).catch((err) => {
+                console.error("Error", err)
+                res.status(500).json({ success: false, redirect: "/users/signup.html" })
+              })
+          })
+        }
+      }).catch((err) => {
+        console.error("Error", err)
+        res.status(500).json({ success: false, redirect: "/users/signup.html" })
+      })
+  })
+
 
 
 router.use(express.static("public"));

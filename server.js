@@ -10,11 +10,14 @@ const usersRouter = require("./routes/users")
 app.set("view engine", "ejs")
 app.set("views", __dirname + "/views")
 
+
 app.use("/users", usersRouter)
 
 app.get("/", (req, res) => {
     res.redirect("/index.html")
 })
+
+
 
 app.use(express.static("public"))
 
