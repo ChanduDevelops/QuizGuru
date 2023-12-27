@@ -71,6 +71,11 @@ const clearSelection = () => {
         ele[i].checked = false;
 }
 
+const timer = () => {
+    const remainingTime = 90 * 60
+
+}
+
 let clearBtn = document.getElementById("clear-btn");
 clearBtn.addEventListener("click", function () {
     console.log(clearBtn);
@@ -104,7 +109,14 @@ endTest.addEventListener("click", () => {
     }).then((result) => {
         if (result.isConfirmed) {
             exitFullScreen();
+            correctAnswersCount = 0
+            wrongAnswerCount = 0
+            unattemptedCount = 0
+            window.location.href = "/users/report.html"
         }
     });
 });
 
+const startTest = () => {
+    //display qsns
+}
