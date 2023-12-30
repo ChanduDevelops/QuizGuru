@@ -26,5 +26,5 @@ function notify(msg, color = "#357cb4") {
         notificationDiv.classList.add("close");
     }, 5000);
     notificationDiv.textContent = msg;
-    console.log(msg);
+    // console.log(msg);
 }

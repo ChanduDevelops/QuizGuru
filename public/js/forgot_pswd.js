@@ -30,7 +30,7 @@ form.addEventListener("submit", (e) => {
                 throw new Error("Something went wrong")
             }
         }).then((data) => {
-            if (data && data.redirect && !data.msg) {
+            if (data?.redirect && !data.msg) {
                 Swal.fire({
                     title: "Successfully updated password!",
                     icon: "success",

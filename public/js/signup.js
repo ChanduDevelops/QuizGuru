@@ -52,7 +52,7 @@ signupForm.addEventListener("submit", (e) => {
                 throw new Error("Something went wrong!")
             }
         }).then((data) => {
-            if (data && data.redirect) {
+            if (data?.redirect) {
                 Swal.fire({
                     title: "Successfully registered!",
                     icon: "success",

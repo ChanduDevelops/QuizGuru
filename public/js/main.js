@@ -5,7 +5,7 @@ const Tests = {
     "Quantitative": "quantitative",
     "Reasoning": "reasoning",
     "Verbal": "verbal",
-    "Current Affairs": "current _affairs",
+    "Current Affairs": "current_affairs",
     "Random Test": "random",
 }
 
@@ -13,29 +13,30 @@ levelLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
         event.preventDefault()
 
-        var levelType = link.textContent.toLowerCase()
+        var testLevel = link?.textContent.toLowerCase()
+        var levelParent = link.parentNode.parentNode
+        var testCategory = Tests[levelParent.querySelector('.column-heading')?.textContent]
 
-        var levelParent = findParentColumn(link)
+        // let url = `/users/qsns?testCategory=${testCategory}&testLevel=${testLevel}`
+        // console.log(testCategory, testLevel);
+        // window.location.href = url
 
-        var testType = Tests[levelParent.querySelector('.column-heading').textContent]
-
-        fetch("http://127.0.0.1:2020/users/qsns", {
+        fetch(`http://127.0.0.1:2020/users/main`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                testType,
-                levelType
+                testCategory: testCategory,
+                testLevel: testLevel
             })
         }).then(res => {
-            if (res.status === 200) {
+            if (res.ok)
                 return res.json()
-            } else {
-                throw new Error("Something went wrong")
-            }
+            else
+                throw new Error("Response not OK")
         }).then(data => {
-            if (data && data.redirect) {
+            if (data?.redirect) {
                 window.location.href = data.redirect
             }
         }).catch(e => {
@@ -45,7 +46,7 @@ levelLinks.forEach((link) => {
 })
 
 function findParentColumn(element) {
-    while (element && !element.classList.contains('column')) {
+    while (element && element.classList.contains('column')) {
         element = element.parentElement
     }
     return element

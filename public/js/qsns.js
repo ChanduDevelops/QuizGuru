@@ -1,9 +1,56 @@
-let startBtn = document.getElementById("start-btn");
-let header = document.querySelector(".header");
-let ncMain = document.querySelector(".nc-main");
-let noticeContainer = document.querySelector(".notice-container");
+const startBtn = document.getElementById("start-btn");
+const header = document.querySelector(".header");
+const ncMain = document.querySelector(".nc-main");
+const noticeContainer = document.querySelector(".notice-container");
 
-let qsnMain = document.querySelector(".qsns-main");
+const qsnMain = document.querySelector(".qsns-main");
+
+var category = document.querySelector(".category")
+var levelType = document.querySelector(".level-type")
+var qsn = document.querySelector(".qsn")
+
+var option1 = document.querySelector(".option1")
+var option2 = document.querySelector(".option2")
+var option3 = document.querySelector(".option3")
+var option4 = document.querySelector(".option4")
+var selected
+var ans = null
+
+var testCategory = null
+var testLevel = null
+var qsnSet = null
+
+const getSelectedOption = () => {
+
+    document.querySelector('.options').addEventListener('click', function (e) {
+        if (e.target && e.target.matches('.option')) {
+            // console.log('Option ' + e.target.id.split('option')[1] + ' is checked.');
+            selected = e.target.id
+        }
+    })
+
+    // var radios = document.getElementsByClassName('option');
+
+    // for (var i = 0; i < radios.length; i++) {
+    //     radios[i].addEventListener('change', function (e) {
+    //         if (this.checked) {
+    //             console.log('Option ' + this.id.split('option')[1] + ' is checked.');
+    //             return this.id
+    //         }
+    //     });
+    // }
+    return null
+
+    // var options = document.querySelectorAll(".option")
+    // // console.log(options);
+    // for (let option of options) {
+    //     if (option.checked) {
+    //         console.log(option.checked);
+    //         return option
+    //     }
+    // }
+    // return null
+}
 
 const goFullScreen = () => {
     header.classList.remove("hdr-visible");
@@ -17,21 +64,21 @@ const goFullScreen = () => {
 
     qsnMain.classList.remove("main-hidden");
     qsnMain.classList.add("main-visible");
-    console.log("qsn-main open");
+    // console.log("qsn-main open");
 
     var elem = document.documentElement;
-    if (!document.fullscreenElement && !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.msRequestFullscreen) {
-            elem.msRequestFullscreen();
-        } else if (elem.mozRequestFullScreen) {
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) {
-            elem.webkitRequestFullscreen();
-        }
-    }
+    // if (!document.fullscreenElement && !document.mozFullScreenElement &&
+    //     !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    //     if (elem.requestFullscreen) {
+    //         elem.requestFullscreen();
+    //     } else if (elem.msRequestFullscreen) {
+    //         elem.msRequestFullscreen();
+    //     } else if (elem.mozRequestFullScreen) {
+    //         elem.mozRequestFullScreen();
+    //     } else if (elem.webkitRequestFullscreen) {
+    //         elem.webkitRequestFullscreen();
+    //     }
+    // }
 }
 
 const exitFullScreen = () => {
@@ -71,6 +118,56 @@ const clearSelection = () => {
         ele[i].checked = false;
 }
 
+const fetchQsns = () => {
+    let currentUrl = "http://127.0.0.1:2020/users/qsns"
+    fetch(currentUrl, {
+        method: "GET"
+    })
+
+    var urlParams = new URLSearchParams(window.location.search)
+    testCategory = urlParams.get("testCategory")
+    testLevel = urlParams.get("testLevel")
+
+    fetch(currentUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            testCategory,
+            testLevel
+        })
+    }).then(res => {
+        if (res.ok) {
+            return res.json()
+        } else {
+            console.log("error");
+        }
+    }).then(data => {
+        if (data?.bitPack) {
+            qsnSet = data.bitPack
+        }
+    })
+}
+
+const getFirstQsn = () => {
+    let categoryText = qsnSet[0].category
+    category.textContent = categoryText.charAt(0).toUpperCase()
+        + categoryText.slice(1)
+
+    let levelText = qsnSet[0].level
+    levelType.textContent = levelText.charAt(0).toUpperCase() + levelText.slice(1)
+
+    qsn.textContent = "Q. " + qsnSet[0].qsn
+    option1.textContent = qsnSet[0].optA
+    option2.textContent = qsnSet[0].optB
+    option3.textContent = qsnSet[0].optC
+    option4.textContent = qsnSet[0].optD
+    ans = qsnSet[0].ans
+}
+const getNextQsn = () => {
+
+}
 const timer = () => {
     const remainingTime = 90 * 60
 
@@ -83,6 +180,9 @@ clearBtn.addEventListener("click", function () {
 });
 
 startBtn.addEventListener("click", () => {
+    // if (qsnSet.length < 1) {
+    //     return
+    // }
     Swal.fire({
         title: "Alert!",
         text: "You are about to enter full screen mode!",
@@ -92,9 +192,10 @@ startBtn.addEventListener("click", () => {
         confirmButtonText: "Yes, start test"
     }).then((result) => {
         if (result.isConfirmed) {
-            goFullScreen();
+            goFullScreen()
+            getFirstQsn()
         }
-    });
+    })
 })
 
 let endTest = document.getElementById("end-test");
@@ -119,4 +220,8 @@ endTest.addEventListener("click", () => {
 
 const startTest = () => {
     //display qsns
+}
+
+window.onload = function () {
+    fetchQsns()
 }

@@ -15,7 +15,7 @@
     </head>
 
     <body>
-        <header class="header hdr-hidden">
+        <header class="header hdr-visible">
             <aside class="side-nav sn-hidden">
                 <ul class="nav-container">
                     <li>
@@ -206,7 +206,7 @@
             </nav>
         </header>
 
-        <div class="nc-main main-hidden">
+        <div class="nc-main main-visible">
             <section class="notice-container">
                 <h1 class="heading">Note</h1>
                 <ul class="instructions">
@@ -230,7 +230,7 @@
             </section>
         </div>
 
-        <div class="qsns-main main-visible">
+        <div class="qsns-main main-hidden">
             <div class="qsn-nav">
                 <div class="category">Aptitude</div>
                 <em class="level-type">Easy</em>
@@ -240,7 +240,7 @@
             </div>
             <div class="qsn-container">
                 <div class="qsn">
-                    <span class="qsn-no">1.</span>
+                    <span class="qsn-no">Q.</span>
                     Considering the complexities and challenges of our current global situation, how would you approach
                     the development of a
                     new policy or strategy to address these issues, ensuring that it is inclusive, effective, and
@@ -258,7 +258,8 @@
                                name="option"
                                class="option"
                                id="option1">
-                        <label for="option1">option1</label>
+                        <label for="option1"
+                               class="option1">option1</label>
 
                     </div>
                     <div class="opt2">
@@ -266,21 +267,24 @@
                                name="option"
                                class="option"
                                id="option2">
-                        <label for="option2">option2</label>
+                        <label for="option2"
+                               class="option2">option2</label>
                     </div>
                     <div class="opt3">
                         <input type="radio"
                                name="option"
                                class="option"
                                id="option3">
-                        <label for="option3">option3</label>
+                        <label for="option3"
+                               class="option3">option3</label>
                     </div>
                     <div class="opt4">
                         <input type="radio"
                                name="option"
                                class="option"
                                id="option4">
-                        <label for="option4">option4</label>
+                        <label for="option4"
+                               class="option4">option4</label>
                     </div>
                 </div>
             </div>
@@ -295,6 +299,10 @@
                         id="next-btn"
                         class="below-btn">Save & Next</button>
             </div>
+        </div>
+
+        <div class="notification close">
+            New notification
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
