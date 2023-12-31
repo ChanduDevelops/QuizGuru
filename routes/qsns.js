@@ -2,7 +2,7 @@ const express = require('express')
 const session = require("express-session")
 const router = express.Router()
 
-const { bitsModel } = require("../models/db")
+const bitsModel = require("../models/bits")
 
 const getBitPack = (testCategory, testLevel) => {
     return bitsModel.find({
@@ -28,10 +28,10 @@ router.route("/")
             .then(bits => {
                 console.log("qsns route post", req.body.testCategory, req.body.testLevel);
                 console.log("bits", bits);
-                if (bits === null) {
+                if (bitPack === null) {
                     res.status(404).json({ status: false, redirect: "/users/main.html" })
                 } else {
-                    res.status(200).json({ status: true, bitPack: bits, redirect: "/users/qsns.html" })
+                    res.status(200).json({ status: true, bitPack: bitPack, redirect: "/users/qsns.html" })
                 }
             })
     })

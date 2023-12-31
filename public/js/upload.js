@@ -22,7 +22,7 @@ quizDataForm.addEventListener("submit", (e) => {
         ans === "select") {
         notify("Must enter all fields", "orange")
     } else {
-        let currentUrl = "http://localhost:2020/users/admin"
+        let currentUrl = "http://127.0.0.1:2020/users/admin"
         fetch(currentUrl, {
             method: "POST",
             headers: {
@@ -48,8 +48,8 @@ quizDataForm.addEventListener("submit", (e) => {
             else {
                 throw new Error("Something went wrong")
             }
-        }).catch((err) => {
-            notify(err, "red")
+        }).catch((e) => {
+            notify(e, "red")
         })
     }
 })

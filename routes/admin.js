@@ -3,13 +3,14 @@ const express = require("express")
 const bodyParser = require('body-parser');
 const router = express.Router()
 
-const { bitsModel } = require("../models/bits")
+const bitsModel = require("../models/bits")
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
 // display admin page
 router.get("/", (re, res) => {
+    console.log(`admin login`)
     res.render("admin.html")
 })
 
@@ -20,7 +21,7 @@ router.post("/", (req, res) => {
 
     bitsModel.create(bodyData)
         .then(() => {
-            console.log(`Data inserted`)
+            console.log(`Bits inserted by admin`)
             res.sendStatus(200)
         })
         .catch((err) => {
