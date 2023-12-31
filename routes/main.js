@@ -12,7 +12,7 @@ router.use(session({
 
 router.route("/")
     .get((req, res) => {
-        res.redirect("/main.html")
+        res.redirect("/users/main.html")
     })
     .post((req, res) => {
         req.session.testCategory = req.body.testCategory

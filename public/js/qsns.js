@@ -16,8 +16,6 @@ var option4 = document.querySelector(".option4")
 var selected
 var ans = null
 
-var testCategory = null
-var testLevel = null
 var qsnSet = null
 
 const getSelectedOption = () => {
@@ -127,27 +125,32 @@ const fetchQsns = () => {
     var urlParams = new URLSearchParams(window.location.search)
     testCategory = urlParams.get("testCategory")
     testLevel = urlParams.get("testLevel")
-
-    fetch(currentUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            testCategory,
-            testLevel
+    console.log(testCategory, testLevel)
+    if (testCategory && testLevel) {
+        fetch(currentUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                testCategory,
+                testLevel
+            })
+        }).then(res => {
+            if (res.ok) {
+                return res.json()
+            } else {
+                console.log("error");
+            }
+        }).then(data => {
+            if (data?.bitPack) {
+                qsnSet = data.bitPack
+            }
         })
-    }).then(res => {
-        if (res.ok) {
-            return res.json()
-        } else {
-            console.log("error");
-        }
-    }).then(data => {
-        if (data?.bitPack) {
-            qsnSet = data.bitPack
-        }
-    })
+    } else {
+        window.location.href = "/users/main"
+        return
+    }
 }
 
 const getFirstQsn = () => {

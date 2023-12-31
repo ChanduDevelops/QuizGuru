@@ -21,13 +21,15 @@ const getBitPack = (testCategory, testLevel) => {
 
 router.route("/")
     .get((req, res) => {
-        res.redirect(`/users/qsns.html?testCategory=${req.session.testCategory}&testLevel=${req.session.testLevel}`)
+        if (req?.session?.testCategory && req?.session?.testLevel) {
+            res.redirect(`/users/qsns.html?testCategory=${req.session.testCategory}&testLevel=${req.session.testLevel}`)
+        } else {
+            res.redirect("/users/main")
+        }
     })
     .post((req, res) => {
         getBitPack(req.body?.testCategory, req.body?.testLevel)
-            .then(bits => {
-                console.log("qsns route post", req.body.testCategory, req.body.testLevel);
-                console.log("bits", bits);
+            .then(bitPack => {
                 if (bitPack === null) {
                     res.status(404).json({ status: false, redirect: "/users/main.html" })
                 } else {
