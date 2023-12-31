@@ -17,7 +17,8 @@ router.use(session({
     cookie: { secure: false }
 }))
 
-const { usersModel } = require("../models/db")
+const usersModel = require("../models/users")
+
 const adminRouter = require("./admin")
 router.use("/admin", adminRouter)
 
