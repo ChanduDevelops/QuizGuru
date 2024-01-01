@@ -30,6 +30,8 @@ const adminMail = "admin@gmail.com"
 const qsnsRouter = require("./qsns")
 router.use("/qsns", qsnsRouter)
 
+const reportRouter = require("./report")
+router.use("/report", reportRouter)
 // login validation
 const validateLogin = (userEmail, userPassword) => {
     return usersModel

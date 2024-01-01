@@ -8,11 +8,15 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
+    }).then(() => {
+        console.log("Connected to mongoose!")
+    }).catch(e => {
+        console.error(e.message)
     })
 
-const db = mongoose.connection
-db.on("error", err => console.error(err))
-db.once("open", () => console.log("Connected to mongoose!"))
+// const db = mongoose.connection
+// db.on("error", err => console.error(err))
+// db.once("open", () => console.log("Connected to mongoose!"))
 
 const express = require("express")
 const app = express()

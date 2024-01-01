@@ -17,7 +17,6 @@ router.route("/")
     .post((req, res) => {
         req.session.testCategory = req.body.testCategory
         req.session.testLevel = req.body.testLevel
-        // console.log("main", testCategory, testLevel)
         res.status(200).json({ status: true, redirect: "/users/qsns" })
     })
 

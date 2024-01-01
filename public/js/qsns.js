@@ -1,9 +1,9 @@
-const startBtn = document.getElementById("start-btn");
-const header = document.querySelector(".header");
-const ncMain = document.querySelector(".nc-main");
-const noticeContainer = document.querySelector(".notice-container");
+const startBtn = document.getElementById("start-btn")
+const header = document.querySelector(".header")
+const ncMain = document.querySelector(".nc-main")
+const noticeContainer = document.querySelector(".notice-container")
 
-const qsnMain = document.querySelector(".qsns-main");
+const qsnMain = document.querySelector(".qsns-main")
 
 var category = document.querySelector(".category")
 var levelType = document.querySelector(".level-type")
@@ -13,42 +13,41 @@ var option1 = document.querySelector(".option1")
 var option2 = document.querySelector(".option2")
 var option3 = document.querySelector(".option3")
 var option4 = document.querySelector(".option4")
-var selected
+var selectedOption
 var ans = null
 
-var qsnSet = null
 
-const getSelectedOption = () => {
+var optionSelected = false
 
-    document.querySelector('.options').addEventListener('click', function (e) {
-        if (e.target && e.target.matches('.option')) {
-            // console.log('Option ' + e.target.id.split('option')[1] + ' is checked.');
-            selected = e.target.id
-        }
-    })
+var [attempted, correctAnswerCount, wrongAnswerCount, unattemptedCount] = [0, 0, 0, 20]
 
-    // var radios = document.getElementsByClassName('option');
+var currentQsn = {
 
-    // for (var i = 0; i < radios.length; i++) {
-    //     radios[i].addEventListener('change', function (e) {
-    //         if (this.checked) {
-    //             console.log('Option ' + this.id.split('option')[1] + ' is checked.');
-    //             return this.id
-    //         }
-    //     });
-    // }
-    return null
-
-    // var options = document.querySelectorAll(".option")
-    // // console.log(options);
-    // for (let option of options) {
-    //     if (option.checked) {
-    //         console.log(option.checked);
-    //         return option
-    //     }
-    // }
-    // return null
 }
+var currentQsnNo = 0
+var qsnSet = []
+
+document.querySelector('.options').addEventListener('click', (e) => {
+
+    if (e.target && e.target.matches('.option')) {
+        optionSelected = true
+        switch (e.target.id) {
+            case "option1": selectedOption = "a"
+                break
+            case "option2": selectedOption = "b"
+                break
+            case "option3": selectedOption = "c"
+                break
+            case "option4": selectedOption = "d"
+                break
+        }
+        if (optionSelected) {
+            attempted++
+        }
+        console.log(selectedOption);
+        // console.log("answer", selectedOption);
+    }
+})
 
 const goFullScreen = () => {
     header.classList.remove("hdr-visible");
@@ -105,29 +104,38 @@ const exitFullScreen = () => {
 
     noticeContainer.classList.remove("nc-hidden");
     noticeContainer.classList.add("nc-visible");
-    console.log("main-visible");
+    // console.log("main-visible");
 
 }
 
 const clearSelection = () => {
     var ele = document.querySelectorAll(".option");
-    console.log(ele);
+    // console.log(ele);
     for (var i = 0; i < ele.length; i++)
-        ele[i].checked = false;
+        ele[i].checked = false
+    if (optionSelected) {
+        optionSelected = false
+        attempted--
+    }
+    displayDetails()
 }
 
 const fetchQsns = () => {
-    let currentUrl = "http://127.0.0.1:2020/users/qsns"
-    fetch(currentUrl, {
-        method: "GET"
-    })
 
     var urlParams = new URLSearchParams(window.location.search)
     testCategory = urlParams.get("testCategory")
     testLevel = urlParams.get("testLevel")
-    console.log(testCategory, testLevel)
+
+    let currentUrl = `http://127.0.0.1:2020/users/qsns?testCategory=${testCategory}&testLevel=${testLevel}`
+    fetch(currentUrl, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    })
+
     if (testCategory && testLevel) {
-        fetch(currentUrl, {
+        fetch("http://127.0.0.1:2020/users/qsns", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -145,47 +153,60 @@ const fetchQsns = () => {
         }).then(data => {
             if (data?.bitPack) {
                 qsnSet = data.bitPack
+                console.log("no of qsns", qsnSet.length);
             }
         })
     } else {
-        window.location.href = "/users/main"
+        console.log("reload");
+        window.location.reload
+        // window.location.href = "/users/main"
         return
     }
 }
 
-const getFirstQsn = () => {
-    let categoryText = qsnSet[0].category
+const renderQsn = qsnNo => {
+    clearSelection()
+    let currentQsn = qsnSet[qsnNo]
+    console.log(currentQsn)
+    let categoryText = currentQsn.category
     category.textContent = categoryText.charAt(0).toUpperCase()
         + categoryText.slice(1)
 
-    let levelText = qsnSet[0].level
+    let levelText = currentQsn.level
     levelType.textContent = levelText.charAt(0).toUpperCase() + levelText.slice(1)
 
-    qsn.textContent = "Q. " + qsnSet[0].qsn
-    option1.textContent = qsnSet[0].optA
-    option2.textContent = qsnSet[0].optB
-    option3.textContent = qsnSet[0].optC
-    option4.textContent = qsnSet[0].optD
-    ans = qsnSet[0].ans
+    qsn.textContent = "Q. " + currentQsn.qsn
+    option1.textContent = currentQsn.a
+    option2.textContent = currentQsn.b
+    option3.textContent = currentQsn.c
+    option4.textContent = currentQsn.d
+    ans = qsnSet[qsnNo].ans
 }
-const getNextQsn = () => {
 
+const getNextQsn = qsnNo => {
+    renderQsn(qsnNo + 1)
 }
+const getprevQsn = qsnNo => {
+    if (qsnNo === 0) {
+        notify("This is first question", "orange")
+        return
+    }
+    renderQsn(qsnNo - 1)
+}
+
 const timer = () => {
     const remainingTime = 90 * 60
 
 }
 
-let clearBtn = document.getElementById("clear-btn");
-clearBtn.addEventListener("click", function () {
-    console.log(clearBtn);
-    clearSelection();
-});
+const clearBtn = document.getElementById("clear-btn");
+clearBtn.addEventListener("click", clearSelection)
 
 startBtn.addEventListener("click", () => {
-    // if (qsnSet.length < 1) {
+    // if (qsnSet?.length < 1) {
+    //     window.location.href = "/users/main"
     //     return
-    // }
+    // } else {
     Swal.fire({
         title: "Alert!",
         text: "You are about to enter full screen mode!",
@@ -196,13 +217,51 @@ startBtn.addEventListener("click", () => {
     }).then((result) => {
         if (result.isConfirmed) {
             goFullScreen()
-            getFirstQsn()
+            renderQsn(currentQsnNo)
         }
     })
 })
 
-let endTest = document.getElementById("end-test");
-endTest.addEventListener("click", () => {
+// const prevoiusBtn = document.getElementById("prev-btn")
+// prevoiusBtn.addEventListener("click", () => {
+//     getprevQsn(currentQsnNo)
+//     currentQsnNo--
+// })
+
+
+const saveAndNextBtn = document.getElementById("next-btn")
+saveAndNextBtn.addEventListener("click", async () => {
+    if (currentQsnNo === qsnSet.length - 1) {
+        await notify("This is the last question!", "orange")
+        return
+    }
+
+
+    if (!selectedOption) {
+        unattemptedCount += 1
+    } else if (selectedOption === ans) {
+        correctAnswerCount += 1
+        attempted++
+    } else {
+        wrongAnswerCount += 1
+        attempted++
+    }
+    displayDetails()
+
+    getNextQsn(currentQsnNo)
+    currentQsnNo++
+})
+function displayDetails() {
+    console.log("qsn no", currentQsnNo)
+
+    console.log("attempted", attempted);
+    console.log("crct", correctAnswerCount)
+    console.log("wrong", wrongAnswerCount)
+    console.log("unatt", unattemptedCount)
+}
+
+const submitTest = document.getElementById("end-test");
+submitTest.addEventListener("click", () => {
     Swal.fire({
         title: "Alert!",
         text: "Do you really want to submit the test?",
@@ -212,18 +271,33 @@ endTest.addEventListener("click", () => {
         confirmButtonText: "Yes, End test"
     }).then((result) => {
         if (result.isConfirmed) {
-            exitFullScreen();
-            correctAnswersCount = 0
-            wrongAnswerCount = 0
-            unattemptedCount = 0
-            window.location.href = "/users/report.html"
+            exitFullScreen()
+            console.log(correctAnswerCount);
+            // ? correctAnswerCount = ${ correctAnswerCount }& wrongAnswerCount=${ wrongAnswerCount }& unattemptedCount=${ unattemptedCount }
+            fetch(`http://127.0.0.1:2020/users/report`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        correctAnswerCount,
+                        wrongAnswerCount,
+                        unattemptedCount: qsnSet.length - attempted
+                    })
+                }).then(res => {
+                    if (res.status === 200) {
+                        window.location.href = "/users/report.html"
+                    } else {
+                        throw new Error("Something went wrong, Try again later")
+                    }
+                }).catch(e => {
+                    notify(e, "red")
+                })
         }
-    });
-});
+    })
+})
 
-const startTest = () => {
-    //display qsns
-}
 
 window.onload = function () {
     fetchQsns()
