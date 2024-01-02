@@ -54,6 +54,8 @@ router.route("/login")
         res.redirect("login.html")
     })
     .post((req, res) => {
+        var isValidated = false
+        var isUserAdmin = false
         const bodyData = req.body
         const userEmail = bodyData.email;
         const userPassword = bodyData.password;
@@ -67,14 +69,21 @@ router.route("/login")
                             res.status(500).json({ success: false, redirect: "/users/login.html" })
                         }
                         else if (result && userEmail === adminMail) {
+                            isValidated = true
+                            isUserAdmin = true
+                            req.session.user = userEmail
+
+                            // res.redirect(`/users/main?user=${userEmail}&validated=${validated}&isUserAdmin=${isUserAdmin}`)
                             res.status(200).json({ success: true, redirect: "/users/admin.html" })
                             console.log(`user : ${userEmail}`)
-                            req.session.user = userEmail
                         }
                         else if (result) {
+                            isValidated = true
+                            req.session.user = userEmail
+
+                            // res.redirect(`/users/main?user=${userEmail}&validated=${validated}&isUserAdmin=${isUserAdmin}`)
                             res.status(200).json({ success: true, redirect: "/users/main.html" })
                             console.log(`user : ${userEmail}`)
-                            req.session.user = userEmail
                         }
                         else {
                             res.status(401).json({ success: false, msg: "wrong password", redirect: "/users/login.html" })

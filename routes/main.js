@@ -21,4 +21,13 @@ router.route("/")
     })
 
 
+function authenticate(re, res, next) {
+    if (req.session?.user && req.query?.isValidated) {
+        next()
+    }
+    else {
+        res.redirect("/users/login")
+    }
+}
+
 module.exports = { router }
