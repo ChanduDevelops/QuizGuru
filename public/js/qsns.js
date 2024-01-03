@@ -121,10 +121,9 @@ const clearSelection = () => {
 }
 
 const fetchQsns = () => {
-
     var urlParams = new URLSearchParams(window.location.search)
-    testCategory = urlParams.get("testCategory")
-    testLevel = urlParams.get("testLevel")
+    var testCategory = urlParams.get("testCategory")
+    var testLevel = urlParams.get("testLevel")
 
     let currentUrl = `http://127.0.0.1:2020/users/qsns?testCategory=${testCategory}&testLevel=${testLevel}`
     fetch(currentUrl, {
@@ -134,7 +133,10 @@ const fetchQsns = () => {
         },
     })
 
-    if (testCategory && testLevel) {
+    if (!testCategory || !testLevel) {
+        window.location.href = "/users/main"
+        return
+    } else {
         fetch("http://127.0.0.1:2020/users/qsns", {
             method: "POST",
             headers: {
@@ -148,19 +150,20 @@ const fetchQsns = () => {
             if (res.ok) {
                 return res.json()
             } else {
-                console.log("error");
+                throw new Error("Questions not found! Try again later!!")
             }
         }).then(data => {
             if (data?.bitPack) {
                 qsnSet = data.bitPack
                 console.log("no of qsns", qsnSet.length);
             }
+        }).catch(e => {
+            notify(e.message, "red")
+            setTimeout(() => {
+                window.location.href = "/users/main"
+            }, 1250)
+
         })
-    } else {
-        console.log("reload");
-        window.location.reload
-        // window.location.href = "/users/main"
-        return
     }
 }
 
@@ -196,7 +199,6 @@ const getprevQsn = qsnNo => {
 
 const timer = () => {
     const remainingTime = 90 * 60
-
 }
 
 const clearBtn = document.getElementById("clear-btn");
@@ -251,6 +253,7 @@ saveAndNextBtn.addEventListener("click", async () => {
     getNextQsn(currentQsnNo)
     currentQsnNo++
 })
+
 function displayDetails() {
     console.log("qsn no", currentQsnNo)
 
@@ -260,7 +263,7 @@ function displayDetails() {
     console.log("unatt", unattemptedCount)
 }
 
-const submitTest = document.getElementById("end-test");
+const submitTest = document.getElementById("end-test")
 submitTest.addEventListener("click", () => {
     Swal.fire({
         title: "Alert!",

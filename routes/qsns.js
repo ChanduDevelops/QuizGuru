@@ -23,14 +23,11 @@ router.route("/")
     .get((req, res) => {
         console.log("query", req.query);
         if (req.query?.testCategory && req.query?.testLevel) {
-            console.log("if");
             res.redirect(`/users/qsns.html?testCategory=${req.query.testCategory}&testLevel=${req.query.testLevel}`)
         }
         else if (req?.session?.testCategory && req?.session?.testLevel) {
-            console.log("else if");
             res.redirect(`/users/qsns.html?testCategory=${req.session.testCategory}&testLevel=${req.session.testLevel}`)
         } else {
-            console.log("else");
             res.redirect("/users/main")
         }
     })
@@ -45,7 +42,6 @@ router.route("/")
                     }
                 })
         } else {
-            console.log("post else");
             res.redirect("/users/main")
         }
     })

@@ -39,15 +39,15 @@ document.addEventListener("click", (e) => {
 })
 
 
-function logout() {
-    const signoutBtns = document.querySelectorAll(".signout");
-    signoutBtns.forEach(btn => {
-        btn.addEventListener("click", () => {
-            window.location.href = "/logout";
-        });
-    });
-}
-logout();
+// function logout() {
+//     const signoutBtns = document.querySelectorAll(".signout");
+//     signoutBtns.forEach(btn => {
+//         btn.addEventListener("click", () => {
+//             window.location.href = "/logout";
+//         });
+//     });
+// }
+// logout();
 
 
 const shareBtn = document.getElementById("share");
@@ -69,17 +69,64 @@ const signoutBtn = document.querySelector(".signout")
 signoutBtn.addEventListener("click", (e) => {
     e.preventDefault()
 
-    const currentUser = sessionStorage.getItem()
-    const currentUrl = "http://127.0.0.1:2020/users/"
-    fetch(currentUrl, {
-        method: "GET",
+    // const currentUrl = "http://127.0.0.1:2020/users/"
+    // fetch(currentUrl, {
+    //     method: "GET",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //         // get currentuser and remove from sessionstorage 
+    //         // currentUser: sessionStorage.get()
+    //     })
+    // })
+})
+
+
+const Tests = {
+    "Arithmetic": "arithmetic",
+    "Quantitative": "quantitative",
+    "Reasoning": "reasoning",
+    "Verbal": "verbal",
+    "GK": "current_affairs",
+    "Current Affairs": "current_affairs",
+    "Random Test": "random",
+}
+var itemLinks = document.querySelectorAll(".side-nav .level")
+itemLinks.forEach(itemLink => {
+    itemLink.addEventListener("click", (e) => {
+        e.preventDefault()
+
+        var testLevel = itemLink?.textContent.toLowerCase()
+        console.log(testLevel)
+
+
+        var levelParent = itemLink.parentNode.parentNode.parentNode
+        var testCategory = Tests[levelParent.querySelector(".item-heading")?.innerText]
+        sendTestData(testLevel, testCategory)
+    })
+})
+
+function sendTestData(testLevel, testCategory) {
+    fetch(`http://127.0.0.1:2020/users/main`, {
+        method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            u
-            // get currentuser and remove from sessionstorage 
-            // currentUser: sessionStorage.get()
+            testCategory: testCategory,
+            testLevel: testLevel
         })
+    }).then(res => {
+        if (res.ok)
+            return res.json()
+        else
+            throw new Error("Response not OK")
+    }).then(data => {
+        if (data?.redirect) {
+            window.location.href = data.redirect
+        }
+    }).catch(e => {
+        notify(e, "red")
     })
-})
+}
