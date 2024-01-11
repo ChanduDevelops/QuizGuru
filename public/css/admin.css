@@ -94,7 +94,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -53%);
+    transform: translate(-50%, -50%);
     width: 50%;
     /* height: 80%; */
     font-size: 1.2em;
@@ -105,12 +105,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: .7em;
 }
 
 .form-heading {
     position: relative;
     font-size: 1.5em;
-    margin-top: .5em;
+    margin: .5em 0;
 }
 
 .form-heading::after {
@@ -127,11 +128,10 @@ form {
     position: relative;
     height: 100%;
     width: 95%;
-    padding: 1em 1em;
-}
-
-div {
-    margin-top: 1em;
+    padding: 0 1em 1em 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
 }
 
 option {
@@ -146,16 +146,16 @@ textarea:focus {
 }
 
 #category {
-    position: absolute;
-    left: 25%;
+    position: relative;
+    left: 1.8em;
     padding: 5px;
     background: var(--bg1-clr);
     border-radius: 5px;
 }
 
 #level {
-    position: absolute;
-    left: 25%;
+    position: relative;
+    left: 5em;
     padding: 5px;
     background: var(--bg1-clr);
     border-radius: 5px;
@@ -164,11 +164,14 @@ textarea:focus {
 .qsn-div {
     width: 100%;
     height: 5em;
+
+    display: flex;
+    align-items: baseline;
 }
 
 #qsn {
-    position: absolute;
-    left: 25%;
+    position: relative;
+    left: 2.2em;
     padding: 5px;
     background: var(--bg1-clr);
     border-radius: 5px;
@@ -180,19 +183,39 @@ textarea:focus {
     line-height: 1.5;
 }
 
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.options div {
+    display: flex;
+    align-items: flex-end;
+    /* background: #000; */
+}
+
 .opt {
-    position: absolute;
-    left: 25%;
+    position: relative;
+    left: 2.8em;
     width: 50%;
     padding: 5px;
-    margin-top: 1em;
+    /* margin-top: 1em; */
     background: var(--bg1-clr);
     border-radius: 5px;
 }
 
+.options div:nth-child(3) .opt {
+    left: 2.5em;
+}
+
+.options div:nth-child(4) .opt {
+    left: 2.6em;
+}
+
 #ans {
-    position: absolute;
-    left: 25%;
+    position: relative;
+    left: 3.7em;
     padding: 5px;
     margin-top: 1em;
     background: var(--bg1-clr);

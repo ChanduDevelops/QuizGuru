@@ -66,20 +66,25 @@ body {
     text-align: justify;
 }
 
-#start-btn {
+.start-btn {
     position: relative;
     top: 2em;
     padding: .25em 1em;
     margin-bottom: 2em;
     font-size: 1em;
     color: #fff;
-    background: var(--main-clr);
+    background: #3c3c3c;
     border-radius: 50px;
+    cursor: not-allowed;
     transition: transform .3s ease;
+}
+
+.start-enable {
+    background: var(--main-clr);
     cursor: pointer;
 }
 
-#start-btn:hover {
+.start-btn:hover {
     transform: scale(.95);
 }
 

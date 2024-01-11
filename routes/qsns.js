@@ -21,7 +21,6 @@ const getBitPack = (testCategory, testLevel) => {
 
 router.route("/")
     .get((req, res) => {
-        console.log("query", req.query);
         if (req.query?.testCategory && req.query?.testLevel) {
             res.redirect(`/users/qsns.html?testCategory=${req.query.testCategory}&testLevel=${req.query.testLevel}`)
         }

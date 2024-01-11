@@ -1,4 +1,4 @@
-const startBtn = document.getElementById("start-btn")
+const startBtn = document.querySelector(".start-btn")
 const header = document.querySelector(".header")
 const ncMain = document.querySelector(".nc-main")
 const noticeContainer = document.querySelector(".notice-container")
@@ -26,6 +26,47 @@ var currentQsn = {
 }
 var currentQsnNo = 0
 var qsnSet = []
+
+
+
+window.onload = function () {
+    console.log(startBtn.classList)
+    startBtn.classList.remove("start-enable")
+
+    let seconds = 4
+    let timer = setInterval(() => {
+        startBtn.innerHTML = "00:0" + seconds
+        if (seconds < 0) {
+            clearInterval(timer)
+            startBtn.innerHTML = "Start"
+            enableStartButton()
+            fetchQsns()
+        }
+        seconds--
+    }, 1000)
+
+}
+
+function enableStartButton() {
+    startBtn.classList.add("start-enable")
+
+    startBtn.addEventListener("click", () => {
+        Swal.fire({
+            title: "Alert!",
+            text: "You are about to enter full screen mode!",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, start test"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                goFullScreen()
+                renderQsn(currentQsnNo)
+            }
+        })
+    })
+}
+
 
 document.querySelector('.options').addEventListener('click', (e) => {
 
@@ -110,14 +151,13 @@ const exitFullScreen = () => {
 
 const clearSelection = () => {
     var ele = document.querySelectorAll(".option");
-    // console.log(ele);
+
     for (var i = 0; i < ele.length; i++)
         ele[i].checked = false
     if (optionSelected) {
         optionSelected = false
-        attempted--
     }
-    displayDetails()
+    // displayDetails()
 }
 
 const fetchQsns = () => {
@@ -148,6 +188,7 @@ const fetchQsns = () => {
             })
         }).then(res => {
             if (res.ok) {
+                enableStartButton()
                 return res.json()
             } else {
                 throw new Error("Questions not found! Try again later!!")
@@ -155,13 +196,19 @@ const fetchQsns = () => {
         }).then(data => {
             if (data?.bitPack) {
                 qsnSet = data.bitPack
-                console.log("no of qsns", qsnSet.length);
+
+                qsnSet = qsnSet.map(qsn => {
+                    qsn.checked = false
+                    qsn.userAnswer = null
+                    return qsn
+                })
+                // console.log(qsnSet[0]);
             }
         }).catch(e => {
             notify(e.message, "red")
             setTimeout(() => {
                 window.location.href = "/users/main"
-            }, 1250)
+            }, 2000)
 
         })
     }
@@ -169,8 +216,9 @@ const fetchQsns = () => {
 
 const renderQsn = qsnNo => {
     clearSelection()
+
     let currentQsn = qsnSet[qsnNo]
-    console.log(currentQsn)
+
     let categoryText = currentQsn.category
     category.textContent = categoryText.charAt(0).toUpperCase()
         + categoryText.slice(1)
@@ -204,26 +252,6 @@ const timer = () => {
 const clearBtn = document.getElementById("clear-btn");
 clearBtn.addEventListener("click", clearSelection)
 
-startBtn.addEventListener("click", () => {
-    // if (qsnSet?.length < 1) {
-    //     window.location.href = "/users/main"
-    //     return
-    // } else {
-    Swal.fire({
-        title: "Alert!",
-        text: "You are about to enter full screen mode!",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, start test"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            goFullScreen()
-            renderQsn(currentQsnNo)
-        }
-    })
-})
-
 // const prevoiusBtn = document.getElementById("prev-btn")
 // prevoiusBtn.addEventListener("click", () => {
 //     getprevQsn(currentQsnNo)
@@ -231,24 +259,29 @@ startBtn.addEventListener("click", () => {
 // })
 
 
-const saveAndNextBtn = document.getElementById("next-btn")
-saveAndNextBtn.addEventListener("click", async () => {
+const NextBtn = document.getElementById("next-btn")
+NextBtn.addEventListener("click", async () => {
     if (currentQsnNo === qsnSet.length - 1) {
         await notify("This is the last question!", "orange")
         return
     }
 
-
     if (!selectedOption) {
         unattemptedCount += 1
     } else if (selectedOption === ans) {
+        currentQsn.userAnswer = selectedOption
+        currentQsn.checked = true
+
         correctAnswerCount += 1
         attempted++
     } else {
+        currentQsn.userAnswer = selectedOption
+        currentQsn.checked = true
+
         wrongAnswerCount += 1
         attempted++
     }
-    displayDetails()
+    // displayDetails()
 
     getNextQsn(currentQsnNo)
     currentQsnNo++
@@ -301,7 +334,3 @@ submitTest.addEventListener("click", () => {
     })
 })
 
-
-window.onload = function () {
-    fetchQsns()
-}

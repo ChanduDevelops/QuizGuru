@@ -69,8 +69,10 @@ function displayEndMsg(chartData) {
     unAns.innerHTML = chartData?.data[2]
 
     let endMsg = document.querySelector(".end-msg")
-
-    if (correctAns > wrongAns + unAns) {
+    let totalNoOfQsns = correctAnswerCount + wrongAns + unAns
+    if (correctAns >= 0.75 * totalNoOfQsns) {
+        endMsg.innerHTML = "--- " + "You nailed it !!" + " ---"
+    } else if (correctAns <= 0.3 * totalNoOfQsns) {
         endMsg.innerHTML = "--- " + "You performed well !!" + " ---"
     }
     else {
