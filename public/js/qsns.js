@@ -67,7 +67,6 @@ function enableStartButton() {
     })
 }
 
-
 document.querySelector('.options').addEventListener('click', (e) => {
 
     if (e.target && e.target.matches('.option')) {
