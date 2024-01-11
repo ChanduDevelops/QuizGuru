@@ -1,5 +1,4 @@
-
-const chart = document.getElementById('myChart');
+const chart = document.getElementById('myChart')
 var chartData = {
     labels: ["correct answers", "wrong answers", "not attemmpted"],
     data: [],
@@ -31,7 +30,6 @@ window.onload = function (e) {
         })
 }
 
-
 function displayPie() {
     new Chart(chart, {
         type: 'doughnut',
@@ -57,7 +55,6 @@ function displayPie() {
         },
     })
 }
-// displayPie()
 
 function displayEndMsg(chartData) {
     let correctAns = document.getElementById("crt-cnt")
@@ -69,7 +66,7 @@ function displayEndMsg(chartData) {
     unAns.innerHTML = chartData?.data[2]
 
     let endMsg = document.querySelector(".end-msg")
-    let totalNoOfQsns = correctAnswerCount + wrongAns + unAns
+    let totalNoOfQsns = correctAns + wrongAns + unAns
     if (correctAns >= 0.75 * totalNoOfQsns) {
         endMsg.innerHTML = "--- " + "You nailed it !!" + " ---"
     } else if (correctAns <= 0.3 * totalNoOfQsns) {

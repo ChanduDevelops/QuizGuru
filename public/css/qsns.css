@@ -162,8 +162,11 @@ body {
     margin-left: 2em;
 }
 
-input[type="radio"] {
-    margin-top: 5em;
+.options div {
+    margin-top: 3em;
+    padding: 5px 15px 5px 10px;
+    width: max-content;
+    cursor: default;
 }
 
 .below-nav {

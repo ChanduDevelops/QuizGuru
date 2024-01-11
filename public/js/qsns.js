@@ -13,38 +13,33 @@ var option1 = document.querySelector(".option1")
 var option2 = document.querySelector(".option2")
 var option3 = document.querySelector(".option3")
 var option4 = document.querySelector(".option4")
-var selectedOption
 var ans = null
+var selectedOption
 
 
-var optionSelected = false
-
-var [attempted, correctAnswerCount, wrongAnswerCount, unattemptedCount] = [0, 0, 0, 20]
-
-var currentQsn = {
-
-}
+var currentQsn
 var currentQsnNo = 0
 var qsnSet = []
 
 
-
 window.onload = function () {
-    console.log(startBtn.classList)
     startBtn.classList.remove("start-enable")
+    fetchQsns()
 
-    let seconds = 4
+    let seconds = 14
     let timer = setInterval(() => {
-        startBtn.innerHTML = "00:0" + seconds
+        if (seconds < 9) {
+            startBtn.innerHTML = "00:0" + seconds
+        } else {
+            startBtn.innerHTML = "00:" + seconds
+        }
         if (seconds < 0) {
+            enableStartButton()
             clearInterval(timer)
             startBtn.innerHTML = "Start"
-            enableStartButton()
-            fetchQsns()
         }
         seconds--
     }, 1000)
-
 }
 
 function enableStartButton() {
@@ -67,27 +62,32 @@ function enableStartButton() {
     })
 }
 
-document.querySelector('.options').addEventListener('click', (e) => {
+document.querySelector(".options").addEventListener("click", (e) => {
+    let target = e.target
+    if (target.tagName === 'INPUT') {
+        target = target.parentNode;
+    }
 
-    if (e.target && e.target.matches('.option')) {
-        optionSelected = true
-        switch (e.target.id) {
-            case "option1": selectedOption = "a"
-                break
-            case "option2": selectedOption = "b"
-                break
-            case "option3": selectedOption = "c"
-                break
-            case "option4": selectedOption = "d"
-                break
+    if (target && target.matches('.opt1, .opt2, .opt3, .opt4')) {
+        let radioButton = target.querySelector('.option')
+        if (radioButton) {
+            radioButton.checked = true
+            switch (radioButton.id) {
+                case "option1": selectedOption = "a"
+                    break
+                case "option2": selectedOption = "b"
+                    break
+                case "option3": selectedOption = "c"
+                    break
+                case "option4": selectedOption = "d"
+                    break
+                default: selectedOption = null
+                    break
+            }
         }
-        if (optionSelected) {
-            attempted++
-        }
-        console.log(selectedOption);
-        // console.log("answer", selectedOption);
     }
 })
+
 
 const goFullScreen = () => {
     header.classList.remove("hdr-visible");
@@ -153,8 +153,8 @@ const clearSelection = () => {
 
     for (var i = 0; i < ele.length; i++)
         ele[i].checked = false
-    if (optionSelected) {
-        optionSelected = false
+    if (selectedOption) {
+        selectedOption = null
     }
     // displayDetails()
 }
@@ -187,7 +187,6 @@ const fetchQsns = () => {
             })
         }).then(res => {
             if (res.ok) {
-                enableStartButton()
                 return res.json()
             } else {
                 throw new Error("Questions not found! Try again later!!")
@@ -195,7 +194,7 @@ const fetchQsns = () => {
         }).then(data => {
             if (data?.bitPack) {
                 qsnSet = data.bitPack
-
+                console.log(qsnSet.length);
                 qsnSet = qsnSet.map(qsn => {
                     qsn.checked = false
                     qsn.userAnswer = null
@@ -236,6 +235,7 @@ const renderQsn = qsnNo => {
 const getNextQsn = qsnNo => {
     renderQsn(qsnNo + 1)
 }
+
 const getprevQsn = qsnNo => {
     if (qsnNo === 0) {
         notify("This is first question", "orange")
@@ -259,28 +259,16 @@ clearBtn.addEventListener("click", clearSelection)
 
 
 const NextBtn = document.getElementById("next-btn")
-NextBtn.addEventListener("click", async () => {
+NextBtn.addEventListener("click", () => {
+
+    currentQsn = qsnSet[currentQsnNo]
+    currentQsn.userAnswer = selectedOption
+    currentQsn.checked = true
+
     if (currentQsnNo === qsnSet.length - 1) {
-        await notify("This is the last question!", "orange")
+        notify("This is the last question!", "orange")
         return
     }
-
-    if (!selectedOption) {
-        unattemptedCount += 1
-    } else if (selectedOption === ans) {
-        currentQsn.userAnswer = selectedOption
-        currentQsn.checked = true
-
-        correctAnswerCount += 1
-        attempted++
-    } else {
-        currentQsn.userAnswer = selectedOption
-        currentQsn.checked = true
-
-        wrongAnswerCount += 1
-        attempted++
-    }
-    // displayDetails()
 
     getNextQsn(currentQsnNo)
     currentQsnNo++
@@ -306,9 +294,20 @@ submitTest.addEventListener("click", () => {
         confirmButtonText: "Yes, End test"
     }).then((result) => {
         if (result.isConfirmed) {
+            let [correctAnswerCount, wrongAnswerCount, unattemptedCount] = [0, 0, 0]
+            qsnSet.forEach(qsn => {
+                console.log("ans", qsn.ans, "   userans", qsn.userAnswer)
+                if (qsn.userAnswer) {
+                    if (qsn.userAnswer === qsn.ans)
+                        correctAnswerCount++
+                    else if (!qsn.userAnswer && qsn.userAnswer !== qsn.ans)
+                        wrongAnswerCount++
+                } else
+                    unattemptedCount++
+            })
+            console.log(correctAnswerCount, wrongAnswerCount, unattemptedCount)
             exitFullScreen()
-            console.log(correctAnswerCount);
-            // ? correctAnswerCount = ${ correctAnswerCount }& wrongAnswerCount=${ wrongAnswerCount }& unattemptedCount=${ unattemptedCount }
+
             fetch(`http://127.0.0.1:2020/users/report`,
                 {
                     method: "POST",
@@ -318,7 +317,7 @@ submitTest.addEventListener("click", () => {
                     body: JSON.stringify({
                         correctAnswerCount,
                         wrongAnswerCount,
-                        unattemptedCount: qsnSet.length - attempted
+                        unattemptedCount
                     })
                 }).then(res => {
                     if (res.status === 200) {
