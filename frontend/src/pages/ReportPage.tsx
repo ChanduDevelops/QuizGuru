@@ -35,7 +35,7 @@ export const ReportPage: React.FC = () => {
       .then((data) => {
         setReport(data);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [stateData]);
 
   useEffect(() => {
@@ -60,11 +60,11 @@ export const ReportPage: React.FC = () => {
             borderColor: '#3f4653',
             backgroundColor: ['green', 'red', 'yellow'],
             borderWidth: 1,
+            borderRadius: 2
           },
         ],
       },
       options: {
-        borderRadius: 2,
         plugins: {
           legend: {
             display: false,
