@@ -1,0 +1,214 @@
+.page-form {
+  --bg2-clr: #373c47;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.page-form .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4.25em;
+  padding: 15px 100px;
+  background-color: var(--main-clr);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.page-form .logo {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  left: -2%;
+}
+
+.page-form .navbar li {
+  display: inline;
+}
+
+.page-form .navbar li > a {
+  position: relative;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 50px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.page-form .navbar li > a::before {
+  content: '';
+  position: absolute;
+  top: 110%;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  transform: scale(0);
+  transform-origin: right;
+  transition: transform 0.3s;
+}
+
+.page-form .navbar li > a:hover::before {
+  transform-origin: left;
+  transform: scale(1);
+}
+
+.page-form .main {
+  position: relative;
+  top: 4.25em;
+  width: 100%;
+  height: 90.75vh;
+  background: var(--bg1-clr);
+}
+
+.page-form .form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  width: 30em;
+  color: #fff;
+  background: var(--bg2-clr);
+  border-radius: 10px;
+  padding: 1em 3em;
+  box-shadow: 2px 2px 20px 3px #000;
+}
+
+.page-form .form-heading {
+  font-size: 2.5em;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 0.7em;
+}
+
+.page-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-form label {
+  font-size: 1.3em;
+  margin-bottom: 0.8em;
+}
+
+.page-form label i {
+  margin-right: 0.5em;
+}
+
+.page-form input {
+  background: transparent;
+  color: #fff;
+  font-size: 1.25em;
+  margin-bottom: 1em;
+  padding: 0.5em 0.5em 0.5em 0.7em;
+  border-bottom: 2px solid var(--main-clr);
+  position: relative;
+}
+
+.page-form input:checked,
+.page-form input:focus,
+.page-form input:valid {
+  background: transparent;
+  color: #fff;
+  outline: none;
+}
+
+.page-form input:focus {
+  border-radius: 5px;
+  box-shadow: 2px 2px 15px 3px var(--main-clr);
+}
+
+.page-form form a {
+  color: var(--main-clr);
+  margin-top: 1em;
+}
+
+.page-form .login-signup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.page-form .btn-div {
+  margin-bottom: 0.7em;
+  display: flex;
+  justify-content: center;
+}
+
+.page-form .submit-btn {
+  position: relative;
+  top: 0.3em;
+  cursor: pointer;
+  padding: 0.5em 2em;
+  margin-top: 1em;
+  color: #fff;
+  background: transparent;
+  border: 2px solid var(--main-clr);
+  border-radius: 50px;
+  font-size: 1.2em;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.page-form .submit-btn:focus {
+  outline: none;
+}
+
+.page-form .submit-btn::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 0;
+  height: 100%;
+  background: var(--main-clr);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+.page-form .submit-btn:hover::before {
+  width: 100%;
+}
+
+.page-form .notification {
+  position: absolute;
+  top: 2em;
+  right: 1.1em;
+  transform: scale(0);
+  transform-origin: top right;
+  display: inline;
+  color: #fff;
+  border-radius: 10px 0 10px 10px;
+  padding: 0.5em 1em;
+  transition: transform 0.3s ease-in-out;
+  background: var(--notification-bg);
+  z-index: 1;
+}
+
+.page-form .notification::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  width: 0;
+  height: 0;
+  border-right: 30px solid transparent;
+  border-left: 30px solid var(--notification-bg);
+  border-bottom: 30px solid transparent;
+  z-index: -1;
+}
+
+.page-form .notification.active {
+  transform: scale(1);
+}
+
+.page-form .notification.close {
+  margin-left: 1em;
+}

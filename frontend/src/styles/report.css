@@ -1,0 +1,102 @@
+.page-report {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg1-clr);
+}
+
+.page-report .main {
+  position: absolute;
+  top: 4.25em;
+  width: 100%;
+  height: 100vh;
+  background: var(--bg1-clr);
+  color: #fff;
+}
+
+.page-report .report-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 70%;
+  height: 80%;
+  background: var(--bg2-clr);
+  border-radius: 10px;
+  box-shadow: 2px 2px 25px #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+}
+
+.page-report .report-heading {
+  position: relative;
+  margin: 1em 0;
+  color: #fff;
+}
+
+.page-report .report-heading::after {
+  position: absolute;
+  content: '';
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.page-report .graph {
+  position: relative;
+  top: 2em;
+  width: 70%;
+  padding: 1em;
+  margin: 1em;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-report .report-section {
+  position: relative;
+  right: -2em;
+  font-size: 1.5em;
+  width: 50%;
+  color: #fff;
+}
+
+.page-report .report-section p {
+  padding: 0.2em 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-report .report-section p .icon {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+.page-report .green {
+  color: green;
+}
+
+.page-report .red {
+  color: red;
+}
+
+.page-report .yellow {
+  color: yellow;
+}
+
+.page-report .report-section .count {
+  position: relative;
+  right: 0;
+}
+
+.page-report .end-msg {
+  font-size: 1.5em;
+  position: relative;
+  top: 2.5em;
+  font-style: italic;
+}

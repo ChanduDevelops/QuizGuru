@@ -1,0 +1,271 @@
+.page-admin {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: #fff;
+}
+
+.page-admin .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4.25em;
+  padding: 15px 100px;
+  background-color: var(--main-clr);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.page-admin .logo {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  left: -2%;
+}
+
+.page-admin .navbar a {
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  margin-left: 50px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.page-admin .navbar a::before {
+  content: '';
+  position: absolute;
+  top: 110%;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  transform: scale(0);
+  transform-origin: right;
+  transition: transform 0.3s;
+}
+
+.page-admin .navbar a:hover::before {
+  transform-origin: left;
+  transform: scale(1);
+}
+
+.page-admin .main {
+  position: relative;
+  top: 4.25em;
+  width: 100%;
+  height: 90.75vh;
+  background: var(--bg1-clr);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-admin .form-container {
+  width: 40em;
+  font-size: 1em;
+  border-radius: 10px;
+  background: var(--bg2-clr);
+  box-shadow: 0 0 20px #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  color: #fff;
+}
+
+.page-admin .form-heading {
+  position: relative;
+  font-size: 1.5em;
+  margin: 0.5em 0;
+  color: #fff;
+}
+
+.page-admin .form-heading::after {
+  position: absolute;
+  content: '';
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+}
+
+.page-admin form {
+  position: relative;
+  height: 100%;
+  width: 95%;
+  padding: 0 1em 1em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.page-admin option {
+  background: var(--bg1-clr);
+}
+
+.page-admin select,
+.page-admin input,
+.page-admin textarea {
+  color: #fff;
+}
+
+.page-admin input:focus,
+.page-admin textarea:focus {
+  border: none;
+  outline: 2px solid var(--main-clr);
+  box-shadow: 0 0 15px 5px var(--main-clr);
+}
+
+.page-admin #category {
+  position: relative;
+  left: 1.8em;
+  padding: 5px;
+  background: var(--bg1-clr);
+  border-radius: 5px;
+}
+
+.page-admin #level {
+  position: relative;
+  left: 5em;
+  padding: 5px;
+  background: var(--bg1-clr);
+  border-radius: 5px;
+}
+
+.page-admin .qsn-div {
+  width: 100%;
+  height: 5em;
+  display: flex;
+  align-items: baseline;
+}
+
+.page-admin #qsn {
+  position: relative;
+  left: 2.2em;
+  padding: 5px;
+  background: var(--bg1-clr);
+  border-radius: 5px;
+  width: 70%;
+  font-size: 0.8em;
+  height: inherit;
+  resize: none;
+  line-height: 1.5;
+}
+
+.page-admin .options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-admin .options div {
+  display: flex;
+  align-items: flex-end;
+}
+
+.page-admin .opt {
+  position: relative;
+  left: 2.8em;
+  width: 50%;
+  padding: 5px;
+  background: var(--bg1-clr);
+  border-radius: 5px;
+}
+
+.page-admin .options div:nth-child(3) .opt {
+  left: 2.5em;
+}
+
+.page-admin .options div:nth-child(4) .opt {
+  left: 2.6em;
+}
+
+.page-admin #ans {
+  position: relative;
+  left: 3.7em;
+  padding: 5px;
+  margin-top: 1em;
+  background: var(--bg1-clr);
+  border-radius: 5px;
+}
+
+.page-admin .upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-admin #submit-btn {
+  position: relative;
+  font-size: 1em;
+  padding: 0.2em 1em;
+  color: #fff;
+  background: transparent;
+  border: 2px solid var(--main-clr);
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.page-admin #submit-btn::before {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--main-clr);
+  transform: translateX(-100%);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+.page-admin #submit-btn:hover::before {
+  transform-origin: right;
+  transform: translateX(0);
+}
+
+.page-admin .notification {
+  position: absolute;
+  top: 2em;
+  right: 1.1em;
+  transform: scale(0);
+  transform-origin: top right;
+  display: inline;
+  color: #fff;
+  border-radius: 10px 0 10px 10px;
+  padding: 0.5em 1em;
+  transition: transform 0.3s ease-in-out;
+  background: var(--notification-bg);
+  z-index: 1;
+}
+
+.page-admin .notification::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  width: 0;
+  height: 0;
+  border-right: 30px solid transparent;
+  border-left: 30px solid var(--notification-bg);
+  border-bottom: 30px solid transparent;
+  z-index: -1;
+}
+
+.page-admin .notification.active {
+  transform: scale(1);
+}
+
+.page-admin .notification.close {
+  margin-left: 1em;
+}

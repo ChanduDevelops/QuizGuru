@@ -1,0 +1,14 @@
+backend/target/
+backend/.mvn/
+backend/.env
+
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+README.md

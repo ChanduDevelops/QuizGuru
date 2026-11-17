@@ -1,0 +1,81 @@
+.page-about {
+  --bg2-clr: #373c47;
+  background: var(--bg1-clr);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.page-about.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-about .main {
+  position: relative;
+  top: 4.25em;
+  width: 100%;
+  flex: 1;
+  background: var(--bg1-clr);
+  color: #fff;
+}
+
+.page-about section {
+  min-height: 91vh;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.page-about section .heading {
+  display: inline;
+  position: relative;
+  text-align: center;
+  font-size: 2.2em;
+  color: #fff;
+  font-family: Orbitron, sans-serif;
+}
+
+.page-about section .heading::before {
+  position: absolute;
+  content: '';
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+}
+
+.page-about section .image {
+  border-radius: 10px;
+}
+
+.page-about section img {
+  border-radius: 10px;
+  width: 35em;
+  box-shadow: -5px 5px 10px #000;
+}
+
+.page-about section .content {
+  width: 50%;
+}
+
+.page-about .summary {
+  margin-top: 3em;
+  width: 95%;
+  font-size: 1.2em;
+  color: #fff;
+}
+
+.page-about .summary p:nth-child(1) {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.page-about dl dt {
+  margin-top: 1em;
+}
+
+.page-about dl dd {
+  margin-left: 2em;
+}

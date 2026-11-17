@@ -1,0 +1,119 @@
+.page-landing {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* navbar started */
+.page-landing .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4.25em;
+  padding: 15px 100px;
+  background-color: var(--main-clr);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.page-landing .logo {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  left: -2%;
+}
+
+.page-landing .navbar li {
+  display: inline;
+}
+
+.page-landing .navbar li > a {
+  position: relative;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 50px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.page-landing .navbar li > a::before {
+  content: '';
+  position: absolute;
+  top: 110%;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  transform: scale(0);
+  transform-origin: right;
+  transition: transform 0.3s;
+}
+
+.page-landing .navbar li > a:hover::before {
+  transform-origin: left;
+  transform: scale(1);
+}
+
+/* main start */
+.page-landing .main {
+  position: relative;
+  top: 4.25em;
+  width: 100%;
+  height: 90.75vh;
+  background: var(--bg1-clr);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1em;
+}
+
+.page-landing .title h1 q {
+  color: #fff;
+  font-size: 1.9em;
+  font-weight: normal;
+}
+
+.page-landing .title h1 {
+  color: #fff;
+}
+
+.page-landing .btn {
+  position: relative;
+  top: 2em;
+  left: 4em;
+  padding: 0.25em 1.5em;
+  font-size: 32px;
+  color: white;
+  background-color: var(--main-clr);
+  border-radius: 10px;
+  border: none;
+  box-shadow: 5px 5px 50px 5px black;
+  transform: scale(1);
+  transition: transform 0.3s;
+  display: inline-block;
+}
+
+.page-landing .btn i {
+  font-size: 24px;
+}
+
+.page-landing .btn:hover {
+  cursor: pointer;
+  transform: scale(0.9);
+}
+
+.page-landing .float-image {
+  position: relative;
+  width: 55em;
+  height: 33em;
+  font-size: 14px;
+  background: url('/images/index_image.png') no-repeat;
+  background-size: cover;
+  border-radius: 10px;
+  box-shadow: -10px -10px 50px 5px;
+}
