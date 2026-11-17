@@ -64,17 +64,19 @@
   position: relative;
   top: 4.25em;
   width: 100%;
-  height: 92vh;
+  min-height: 91.25vh;
   background: var(--bg1-clr);
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   gap: 1em;
+  padding: 3em;
 }
+
 
 .page-landing .title h1 q {
   color: #fff;
-  font-size: 1.7em;
+  font-size: 1.2em;
   font-weight: normal;
 }
 
