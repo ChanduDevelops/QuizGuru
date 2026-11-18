@@ -96,7 +96,7 @@ export const QuizPage: React.FC = () => {
 
   const exitFullScreen = useCallback(() => {
     if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {});
+      document.exitFullscreen().catch(() => { });
     }
     setExamStarted(false);
   }, []);
@@ -175,8 +175,7 @@ export const QuizPage: React.FC = () => {
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       setTimerDisplay(
-        `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${
-          seconds < 10 ? '0' : ''
+        `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''
         }${seconds}`
       );
 
@@ -205,7 +204,7 @@ export const QuizPage: React.FC = () => {
       if (result.isConfirmed) {
         const elem = document.documentElement;
         if (!document.fullscreenElement && elem.requestFullscreen) {
-          elem.requestFullscreen().catch(() => {});
+          elem.requestFullscreen().catch(() => { });
         }
         setExamStarted(true);
         setSelectedOption(null);
@@ -250,10 +249,9 @@ export const QuizPage: React.FC = () => {
   const currentQuestion = qsnSet[currentQsnNo];
   const formattedStartLabel =
     startEnabled || noticeSeconds < 0
-      ? 'Start'
-      : noticeSeconds < 10
-      ? `00:0${noticeSeconds}`
-      : `00:${noticeSeconds}`;
+      ? 'Start' : noticeSeconds < 10
+        ? `00:0${noticeSeconds}`
+        : `00:${noticeSeconds}`;
 
   const capitalize = (val?: string) =>
     val ? val.charAt(0).toUpperCase() + val.slice(1) : '';
