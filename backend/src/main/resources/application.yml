@@ -2,12 +2,11 @@ server:
   port: ${SERVER_PORT:8090}
 
 spring:
+  application:
+    name: quizguru-backend
   config:
     import: "optional:file:backend/.env[.properties],optional:file:.env[.properties]"
-    application:
-    name: quizguru-backend
-  data:
-    mongodb:
+  mongodb:
       uri: ${MONGODB_URI:mongodb://localhost:27017/quizguru}
       auto-index-creation: false
 
