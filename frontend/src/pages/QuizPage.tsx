@@ -363,3 +363,4 @@ export const QuizPage: React.FC = () => {
     </div>
   );
 };
+
